@@ -14,9 +14,6 @@ from database.connection import Base
 # makes `--autogenerate` think a table should be DROPPED. This is the #1 autogenerate gotcha.
 
 import models.employee  # noqa: F401
-import models.address
-import models.department
-import models.employee_department
 
 config = context.config
 

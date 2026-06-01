@@ -1,9 +1,8 @@
-from typing import Any, Optional, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
-from sqlalchemy import DateTime, Integer, String, func, ForeignKey
+from sqlalchemy import Integer, String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from models.entity import Entity
-from database import Base
 
 from datetime import datetime
 

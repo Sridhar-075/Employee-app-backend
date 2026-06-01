@@ -1,22 +1,8 @@
-from datetime import datetime
 import logging
-from middleware.logger import RequestLoggingMiddleware
-from fastapi import Body, FastAPI, HTTPException, status, Depends, Request
-from typing import TypedDict
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from dataclasses import dataclass
-from database import get_db
-from contextlib import asynccontextmanager
-from models import Employee
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy import select, update
+from fastapi import FastAPI
 from employees import employee_router
 from middleware import configure_middleware
 from config import settings
-from employees.schemas import EmployeeResponse
-from exceptions import NotFoundException
 from exceptions.handlers import register_exception_handler
 from auth.router import router as auth_router
 from departments import router as department_router

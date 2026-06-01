@@ -1,11 +1,10 @@
 """Employee Router"""
 
-from fastapi import APIRouter, Depends, Body, status
+from fastapi import APIRouter, Depends, status
 from database import get_db
 from sqlalchemy.ext.asyncio import AsyncSession
 from employees import service, schemas
 from auth.dependencies import get_current_user, require_role
-from auth.schemas import TokenPayload
 from models.employee import EmployeeRole
 
 

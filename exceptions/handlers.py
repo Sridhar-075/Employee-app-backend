@@ -9,7 +9,6 @@ from exceptions import (
 from fastapi import status, Request
 from fastapi.responses import JSONResponse
 import logging
-import json
 from fastapi import FastAPI
 
 logger = logging.getLogger(__name__)

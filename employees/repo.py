@@ -1,7 +1,6 @@
 """Employee Repo"""
 
 from datetime import datetime
-from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 from models.employee import Employee

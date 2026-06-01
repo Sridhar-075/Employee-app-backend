@@ -1,9 +1,8 @@
 """Employee Service"""
 
 import employees.repo as repo
-from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from exceptions import NotFoundException, BadRequestException, UnauthorizedException
+from exceptions import NotFoundException, BadRequestException
 from models.employee import Employee
 from auth.utils import hash_password
 
@@ -15,7 +14,7 @@ async def get_all_employees(db: AsyncSession):
 
 async def create(db: AsyncSession, body) -> Employee:
     if not isinstance(body.name, str) or not body.name.strip():
-        raise BadRequestException(f"name must be a non-empty string")
+        raise BadRequestException("name must be a non-empty string")
     if not isinstance(body.email, str) or not body.email.strip():
         raise BadRequestException("email must be a non-empty string")
     hashed = hash_password(body.password)
