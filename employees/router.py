@@ -70,7 +70,7 @@ async def update_employee(
 async def employee_add_address(
     id: int, body: schemas.AddressCreate, db: AsyncSession = Depends(get_db)
 ):
-    employee = await service.add_address(db, id, body)
+    await service.add_address(db, id, body)
     return "Address added"
 
 
@@ -78,11 +78,31 @@ async def employee_add_address(
     "/employee/{id}/department/{department_id}",
     dependencies=[Depends(require_role(EmployeeRole.HR))],
 )
-async def add_department(
+async def attatch_departent(
     id: int, department_id: int, db: AsyncSession = Depends(get_db)
 ):
     await service.employee_add_department(db, id, department_id)
-    return "Department added"
+    return "Department attatched"
+
+
+@router.delete(
+    "/employee/{id}/department/{department_id}",
+    dependencies=[Depends(require_role(EmployeeRole.HR))],
+)
+async def detatch_department(
+    id: int, department_id: int, db: AsyncSession = Depends(get_db)
+):
+    await service.employee_detatch_department(db, id, department_id)
+    return "Department detatched"
+
+
+@router.delete(
+    "/employee/{id}/addresses/{address_id}",
+    dependencies=[Depends(require_role(EmployeeRole.HR))],
+)
+async def delete_address(id: int, address_id: int, db: AsyncSession = Depends(get_db)):
+    await service.delete_address(db, id, address_id)
+    return "Address Deleted"
 
 
 @router.get("/{id}", response_model=schemas.EmployeeResponseId)

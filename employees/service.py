@@ -67,3 +67,13 @@ async def update_employee_service(id, db: AsyncSession, body):
     updates = body.model_dump(exclude_unset=True)
     await repo.employee_update(id, db, updates)
     return
+
+
+async def employee_detatch_department(db: AsyncSession, id: int, department_id: int):
+    await repo.detatch_department(id, department_id, db)
+    return
+
+
+async def delete_address(db: AsyncSession, id: int, address_id: int):
+    await repo.delete_address(id, address_id, db)
+    return

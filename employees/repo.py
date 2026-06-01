@@ -8,7 +8,7 @@ from models.address import Address
 from sqlalchemy import select, update
 from sqlalchemy.orm import selectinload
 from models.department import Departments
-from exceptions import ConflictException
+from exceptions import ConflictException, NotFoundException
 
 
 async def get_all_employees(db: AsyncSession):
@@ -78,7 +78,7 @@ async def search_by_name(name: str, db: AsyncSession):
     stmt = (
         select(Employee)
         .options(selectinload(Employee.addresses))
-        .where(Employee.deleted_at == None)
+        .where(Employee.deleted_at is None)
         .where(Employee.name == name)
     )
     result = await db.scalars(stmt)
@@ -100,7 +100,7 @@ async def get_by_id(db: AsyncSession, id: int):
 
 async def delete_by_id(db: AsyncSession, id: int):
     stmt = update(Employee).where(Employee.id == id).values(deleted_at=datetime.now())
-    result = await db.execute(stmt)
+    await db.execute(stmt)
     try:
         await db.commit()
     except IntegrityError:
@@ -152,9 +152,49 @@ async def employee_add_department(id: int, department_id: int, db: AsyncSession)
 
 async def employee_update(id, db: AsyncSession, body):
     stmt = update(Employee).where(Employee.id == id).values(**body)
-    result = await db.execute(stmt)
+    await db.execute(stmt)
     try:
         await db.commit()
     except IntegrityError:
         await db.rollback()
     return
+
+
+async def detatch_department(id, department_id, db: AsyncSession):
+    stmt = (
+        select(Employee)
+        .options(selectinload(Employee.departments))
+        .where(Employee.id == id)
+    )
+    result = await db.execute(stmt)
+    employee = result.scalar_one()
+    stmt2 = select(Departments).where(Departments.id == department_id)
+    result2 = await db.execute(stmt2)
+    department = result2.scalar_one()
+    employee.departments.remove(department)
+    try:
+        await db.commit()
+        return
+    except IntegrityError:
+        await db.rollback()
+
+    return
+
+
+async def delete_address(id, address_id, db: AsyncSession):
+    stmt = select(Address).where(Address.id == address_id)
+    result = await db.scalars(stmt)
+    address = result.first()
+    if address.employee_id != id:
+        raise NotFoundException("No Employee exists with matching address")
+
+    stmt2 = (
+        update(Address)
+        .where(Address.id == address_id)
+        .values(deleted_at=datetime.now())
+    )
+    await db.execute(stmt2)
+    try:
+        await db.commit()
+    except IntegrityError:
+        await db.rollback()
