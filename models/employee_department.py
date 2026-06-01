@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey,Column, Table
+from sqlalchemy import ForeignKey, Column, Table
 from database import Base
 
 employee_department = Table(

@@ -15,15 +15,19 @@ import pytest
 #     hashed = hash_password("secret123")
 #     assert verify_password("", hashed) is False
 
+
 @pytest.fixture
 def hashed_password():
     return hash_password("secret123")
 
+
 def test_correct_password(hashed_password):
-    assert verify_password("secret123",hashed_password) is True
+    assert verify_password("secret123", hashed_password) is True
+
 
 def test_verify_password_rejects_wrong_password(hashed_password):
-    assert verify_password("wrong",hashed_password) is False
+    assert verify_password("wrong", hashed_password) is False
+
 
 def test_verify_password_rejects_empty_password(hashed_password):
-    assert verify_password("",hashed_password) is False
+    assert verify_password("", hashed_password) is False

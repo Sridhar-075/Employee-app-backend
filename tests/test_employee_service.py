@@ -23,10 +23,7 @@ async def test_create_employee_persists_the_record():
 
     async with session_factory() as db:
         body = EmployeeCreate(
-            name="Ada",
-            email="ada@example.com",
-            password="secret123",
-            age=56
+            name="Ada", email="ada@example.com", password="secret123", age=56
         )
         employee = await db.run_sync(
             lambda sync_session: employee_service.create(sync_session, body)

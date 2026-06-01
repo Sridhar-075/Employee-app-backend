@@ -1,7 +1,7 @@
 from datetime import datetime
 import logging
 from middleware.logger import RequestLoggingMiddleware
-from fastapi import Body, FastAPI, HTTPException,status,Depends, Request
+from fastapi import Body, FastAPI, HTTPException, status, Depends, Request
 from typing import TypedDict
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -20,6 +20,7 @@ from exceptions import NotFoundException
 from exceptions.handlers import register_exception_handler
 from auth.router import router as auth_router
 from departments import router as department_router
+
 # from database import create_tables
 _employees: dict[int, dict] = {}
 _next_id: int = 1
@@ -50,7 +51,7 @@ logging.basicConfig(
 app = FastAPI(
     title="Employee CRUD API",
     description="Was a Simple API with dict storage, now with DBMS",
-    version ="1.0.0",
+    version="1.0.0",
     # lifespan=lifespan
 )
 
@@ -61,22 +62,23 @@ app.include_router(department_router)
 app.include_router(employee_router)
 
 
-
 @app.get("/health", tags=["Health"])
 def health_check():
     return {"status": "healthy", "env": settings.app_env, "debug": settings.debug}
+
 
 @app.get("/")
 def root():
     return "Welcome to Employee CRUD API"
 
-#---------------------
+
+# ---------------------
 
 # @app.get("/employee")
 # def get_employee():
 #     return _employees
 
-#---------------------
+# ---------------------
 
 # @app.get("/employee", tags=["Employees"],response_model=list[EmployeeResponse])
 # async def get_all_employees(db: AsyncSession = Depends(get_db)):
@@ -93,11 +95,11 @@ def root():
 #     result = await db.execute(stmt)
 #     await db.commit()
 #     # res = [r.to_api_dict() for r in result.all()]
-   
+
 #     return result
 
 
-#-------------------------
+# -------------------------
 # @app.delete("/employee/{id}",status_code = status.HTTP_204_NO_CONTENT )
 # def delete(id:int):
 #     employee = _employees.get(id)
@@ -109,7 +111,7 @@ def root():
 
 # @app.post("/employees",
 #           status_code = 201,
-         
+
 #           )
 # def create_post(post:dict = Body(...)) -> dict:
 #     global _next_id
@@ -123,9 +125,9 @@ def root():
 #     }
 #     _next_id+=1
 #     return _employees[id]
-#--------------------------------------
+# --------------------------------------
 
-#DBMS
+# DBMS
 # @app.post("/employee", status_code=status.HTTP_201_CREATED, tags=["Employees"])
 # async def create_employee(body: dict = Body(...), db: AsyncSession = Depends(get_db)):
 #     name = body.get("name")
@@ -143,4 +145,3 @@ def root():
 #         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=f"Email '{email.strip()}' is already in use")
 #     await db.refresh(db_employee)
 #     return db_employee.to_api_dict()
-

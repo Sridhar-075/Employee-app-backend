@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 
-
 def configure_middleware(app: FastAPI) -> None:
     """
     Register ASGI middleware. Last added is outermost (runs first on the request path).

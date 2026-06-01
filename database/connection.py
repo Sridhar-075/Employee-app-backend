@@ -9,7 +9,7 @@ thread-pool worker.
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
-from sqlalchemy.orm import DeclarativeBase,declarative_base
+from sqlalchemy.orm import DeclarativeBase, declarative_base
 
 from config import settings
 
@@ -27,6 +27,7 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
     """One AsyncSession per request; closed after the request."""
     async with AsyncSessionLocal() as session:
         yield session
+
 
 # class Base(DeclarativeBase):
 #     """Base class for ORM mapped classes (entities)."""

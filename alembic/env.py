@@ -13,8 +13,8 @@ from database.connection import Base
 # `target_metadata` below is only as complete as these imports — a missing import
 # makes `--autogenerate` think a table should be DROPPED. This is the #1 autogenerate gotcha.
 
-import models.employee # noqa: F401
-import models.address  
+import models.employee  # noqa: F401
+import models.address
 import models.department
 import models.employee_department
 
