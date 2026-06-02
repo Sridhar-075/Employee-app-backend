@@ -17,6 +17,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     jwt_expiry_minutes: int
     jwt_secret: str
+    jwt_expiry_refresh: int
+    jwt_secret_refresh: str
     jwt_algorithm: str
     database_url: str
     app_env: str = "development"

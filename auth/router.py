@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from auth import service as auth_service
-from auth.schemas import TokenResponse
+from auth.schemas import TokenResponse, RefreshTokenRequest
 from database import get_db
+from auth import service
 from fastapi.security import OAuth2PasswordRequestForm
 import logging
 
@@ -21,4 +22,9 @@ async def login(
 ):
     token = await auth_service.login(db, form.username, form.password)
     logger.info(f"User {form.username} logged in successfulyy")
-    return TokenResponse(access_token=token)
+    return token
+
+
+@router.post("/refresh", response_model=TokenResponse)
+async def refresh(body: RefreshTokenRequest):
+    return await service.refresh(body.refresh_token)
