@@ -90,6 +90,7 @@ async def get_by_id(db: AsyncSession, id: int):
     stmt = (
         select(Employee)
         .options(selectinload(Employee.addresses))
+        .options(selectinload(Employee.departments))
         .where(Employee.id == id)
     )
     result = await db.scalars(stmt)

@@ -51,6 +51,13 @@ class EmployeeCreate(BaseModel):
     address: AddressCreate | None = None
 
 
+class DepartmentResponse(BaseModel):
+    id: int
+    name: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class EmployeeResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
@@ -58,6 +65,7 @@ class EmployeeResponse(BaseModel):
     email: str
     age: int | None = None
     addresses: list[AddressCreate] = []
+    departments: list[DepartmentResponse] = []
 
 
 class EmployeeResponseId(EmployeeResponse):
